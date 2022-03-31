@@ -13,7 +13,10 @@
 }
 
 body{
-  background-image: url("https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRt5k43JDzlFoKDrV6w54iwdYceIE6KUAB_gA&usqp=CAU");
+  background-image: url("https://thescriptblog.com/wp-content/uploads/2020/10/tumblr_inline_nrvrnfIALM1rk1lvi_1280.jpg");
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
 }
 
 .pageContainer{
