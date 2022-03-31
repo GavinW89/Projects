@@ -2,31 +2,34 @@ import axios from 'axios';
 import React, {useState} from 'react';
 import { useHistory, Link} from 'react-router-dom';
 export default props => {
-    const [error, setError] = useState({});
+    const [error, setError] = useState("");
     const history = useHistory();
     const [form, setForm] = useState({
-        name: '',
         email: '',
         password: '',
-        confirm: ''
     });
-
+    
     const onChangeHandler = (e) => {
         setForm({
             ...form,
-            [e.target.name]: e.target.type
+            [e.target.name]: e.target.value
         })
     }
 
     const onSubmitHandler = (e) =>{
         e.preventDefault();
-        axios.post('http://localhost:8000/api/users/login', form, {withCredentials:true})
+        
+        axios.post('http://localhost:8000/api/users/login', form, {withCredentials: true})
             .then(res =>{
                 console.log(res)
-                history.push('/main')
+                if(res.data.msg === "Invalid login attempt"){
+                    setError(res.data.msg)
+                }else{
+                    history.push('/main')
+                }
             })
             .catch(err => {
-                setError(err.response.data.error.errors)
+                console.log(err.response)
             })
     }
 
@@ -36,7 +39,8 @@ export default props => {
         padding: '40px',
         marginTop: '60px',
         marginLeft: '40px',
-        backgroundColor: 'white'
+        backgroundColor: 'white',
+        borderRadius: '15px'
     }
 
 
@@ -59,6 +63,7 @@ export default props => {
             </div>
         </div>
         <div>
+            <p className="text-danger">{error?error : ""}</p>
             <input type='submit' className='btn btn-primary mt-4 btn-lg' value='Login'/>
         </div>
     </form>

@@ -8,7 +8,9 @@ import RegistrationForm from './components/RegistrationForm';
 import LoginForm from './components/LoginForm'
 import MovieBox from './components/MovieBox';
 import Main from './views/Main';
+import Survey from './views/Survey'
 import {useEffect} from "react";
+import CatchVibes from './views/CatchVibes';
 
 
 
@@ -40,6 +42,14 @@ function App() {
           <Route exact path='/main'>
               <Main/>
           </Route>
+
+          <Route exact path='/survey'>
+              <Survey/>
+          </Route>
+
+        <Route exact path='/catchvibes/:genre'>
+          <CatchVibes/>
+        </Route>
 
         </Switch>
       </div>

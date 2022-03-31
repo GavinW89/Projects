@@ -12,7 +12,7 @@ const secret = "It's a secret";
 module.exports.secret = secret;
 
 module.exports.authenticate = (req, res, next) => {
-    jwt.verify(req.cookies.usertoken, process.env.SECRET_KEY, (err, payload) => {
+    jwt.verify(req.cookies.usertoken, secret, (err, payload) => {
         if (err) {
             res.status(401).json({ verified: false });
         } else {

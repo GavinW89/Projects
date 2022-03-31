@@ -3,17 +3,23 @@ const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 const{secret} = require("../config/jwt");
 
+
 class UserController{
     register(req, res){
         console.log("registering now");
         User.create(req.body)
-        .then((user) =>{
+        .then(user => {
+            const userToken = jwt.sign({
+                _id: user._id
+            }, secret);
+
             res
-            .cookie("usertoken", jwt.sign({_id:user._id},secret,{httpOnly: true}))
-            .json({msg:"success", user:user})
+                .cookie("usertoken", userToken, secret, {
+                    httpOnly: true
+                })
+                .json({ msg: "success!", user: user });
         })
         .catch(err=> res.json(err))
-
     }
 
     login(req,res){
@@ -27,7 +33,7 @@ class UserController{
                     .then(passwordIsValid=>{
                         if(passwordIsValid){
                             res.cookie("usertoken", jwt.sign({_id: user._id}, secret), {httpOnly:true})
-                            .json({msg:"success!"});
+                            .json({msg:"success!", user: user });
                         }else{
                             res.json({msg:"Invalid login attempt"})//incorrect password
                         }
@@ -36,6 +42,22 @@ class UserController{
             }
         })  
         .catch(err=>res.json(err))
+    }
+
+    logout(req, res) {
+        console.log("Hit the logout");
+        res.clearCookie('usertoken')
+        res.sendStatus(200)
+    }
+
+
+    getLoggedInUser(req,res){
+        const decoddedJWT = jwt.decode(req.cookies.usertoken, {complete:true});
+        console.log(decoddedJWT);
+        User.findById(decoddedJWT.payload._id)
+            .then(user=> res.json({results: user}))
+            .catch(err=> res.json(err))
+
     }
 
     

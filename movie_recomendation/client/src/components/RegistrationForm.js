@@ -2,8 +2,13 @@ import axios from 'axios';
 import React, {useState} from 'react';
 import { useHistory, Link} from 'react-router-dom';
 export default props => {
-    const [error, setError] = useState({});
     const history = useHistory();
+    const [error, setError] = useState({
+        name: '',
+        email: '',
+        password: '',
+        confirm: ''
+    });
     const [form, setForm] = useState({
         name: '',
         email: '',
@@ -23,10 +28,13 @@ export default props => {
         axios.post('http://localhost:8000/api/users/register', form, {withCredentials:true})
             .then(res =>{
                 console.log(res)
-                history.push('/main')
+                if(res.data.errors){
+                    setError(res.data.errors)
+                }else{
+                    history.push('/main')//switched to login since the loggedinuser info that pops up on main.js changes properly when logging in, but not when registration pushes to main.. the previous loggedinuser info still shows up.
+                }
             })
             .catch(err => {
-                // setError(err.response.data.error.errors)
                 console.log(err)
             })
     }
@@ -37,7 +45,8 @@ export default props => {
         padding: '40px',
         marginTop: '60px',
         marginLeft: '40px',
-        backgroundColor: 'white'
+        backgroundColor: 'white',
+        borderRadius: '15px'
     }
 
     return(
@@ -49,8 +58,9 @@ export default props => {
                 <div className='form-group mt-3 '>
                     <label className='font-weight-bold h4'>Name:</label>
                     <div className='input-group input-group-lg'>
-                    <input type="text" className='form-control border border-dark mt-2 mx-auto w-75 ' placeholder='Enter Name' name='name' onChange={onChangeHandler}/>
+                        <input type="text" className='form-control border border-dark mt-2 mx-auto w-75 ' placeholder='Enter Name' name='name' onChange={onChangeHandler}/>
                     </div>
+                    <p className="text-danger"> {error.name?error.name.message: ""}</p>
                 </div>
                 <div className='form-group mt-3'>
                     <label className='font-weight-bold h4'>Email:</label>
@@ -58,12 +68,15 @@ export default props => {
                     <input type="email" className='form-control border border-dark mt-2 mx-auto w-75' placeholder='name@example.com' name='email' onChange={onChangeHandler}/>
                     </div>
                 </div>
+                <p className="text-danger"> {error.email?error.email.message: ""}</p>
                 <div className='form-group mt-3'>
                     <label className='font-weight-bold h4'>Password:</label>
                     <div className='input-group input-group-lg'>
                     <input type="password" className='form-control border border-dark mt-2 mx-auto w-75' placeholder='Enter Password' name='password' onChange={onChangeHandler}/>
                     </div>
                 </div>
+                <p className="text-danger"> {error.password?error.password.message: ""}</p>
+                <p className="text-danger"> {error.confirm?error.confirm.message: ""}</p>
                 <div className='form-group mt-3'>
                     <label className='font-weight-bold h4'>Confirm Password:</label>
                     <div className='input-group input-group-lg'>
