@@ -1,10 +1,12 @@
 import axios from "axios";
 import { useEffect, useState } from "react";
 import { Link, useHistory } from "react-router-dom";
+import TopMovies from '../components/TopMovies'
 
 
 const Main = (props) => {
     const [loggedInUser, setLoggedInUser] = useState({})
+    const [tops, setTops] = useState ([])
     const history = useHistory();
     
     useEffect(()=> {
@@ -28,6 +30,12 @@ const Main = (props) => {
         <p >Looking for movie recommendations? <Link to="/survey">Click here</Link></p>
         </div>
         <div className="bottomTier">
+            <div className="left">
+        </div>
+        <div className="right">
+            <h2>Top Movies in Theaters: </h2>
+            <TopMovies/>
+        </div>
         </div>
     </div>
     );

@@ -16,7 +16,9 @@ body{
   background-image: url("https://thescriptblog.com/wp-content/uploads/2020/10/tumblr_inline_nrvrnfIALM1rk1lvi_1280.jpg");
   background-size: cover;
   background-position: center;
-  background-repeat: no-repeat;
+  background-attachment: fixed;
+  height: 100vh
+
 }
 
 .pageContainer{
@@ -84,4 +86,15 @@ body{
 }
 .imdb{
   height:30px;
+}
+.right{
+  
+}
+.top{
+    justify-content: center;
+    align-items: center;
+}
+
+.picMain{
+  height:150px;
 }
