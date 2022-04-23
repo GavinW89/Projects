@@ -6,20 +6,26 @@ import MovieBox from "../components/MovieBox";
 const CatchVibes = (props) => {
     const [loaded, setLoaded] = useState(false)
     const {genre} = useParams();
-    const RandomMovieList = []
+    const [RandomMovieList, setRandomMovieList] = useState([])
+
     
     useEffect(()=> {
+        let list =[]
         for(let i = 1; i<=5; i++){
-            const RandomPage = Math.floor(Math.random()*501)
+            const RandomPage = Math.floor(Math.random()* (501 - 1) + 1)
             const RandomMovie = Math.floor(Math.random()*20)
             axios.get(`https://api.themoviedb.org/3/discover/movie?api_key=af5ff8bffc4eea4a393e2b9649bc8e5e&language=en-US&include_adult=true&page=${RandomPage}&with_genres=${genre}`)
                 .then(res => {
-                    RandomMovieList.push(res.data.results[RandomMovie])
+                    list.push(res.data.results[RandomMovie])
+                    setRandomMovieList([
+                        ...list
+                    ])
                 })
                 .catch(err => {
                     console.log(err)
                 })
             }
+            // setRandomMovieList(list)
 
             console.log('HERES YOUR RANDOM MOVIE LIST')
             console.log(RandomMovieList)

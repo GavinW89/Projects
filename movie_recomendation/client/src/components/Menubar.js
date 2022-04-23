@@ -23,6 +23,7 @@ const darkTheme = createTheme({
 export default function ButtonAppBar() {
     const [cookie, setCookie, removeCookie] = useCookies(['usertoken']);
     const [loggedIn, setLoggedIn] = useState(false);
+    const [loaded, setLoaded] = useState(false);
     const history = useHistory();
 
     const onClickHandler= (e) =>{
@@ -49,6 +50,7 @@ export default function ButtonAppBar() {
             .then(res => {
                 // console.log(res)
                 setLoggedIn(!loggedIn)
+                setLoaded(!loaded)
             })
             .catch(err => {
                 console.log(err)
@@ -74,10 +76,13 @@ export default function ButtonAppBar() {
             <img className="logo" src="https://scontent-lga3-2.xx.fbcdn.net/v/t1.6435-9/175944081_147533410641973_7512514495715658854_n.jpg?_nc_cat=110&ccb=1-5&_nc_sid=e3f864&_nc_ohc=l7eXBswCIv4AX_DzjZw&_nc_ht=scontent-lga3-2.xx&oh=00_AT9AIochrGq76vDYDk9CT-XPDvLboh8wubgwmSn6qcmwDA&oe=62670327"/>
             </Typography>
             <Typography></Typography>
-            <Button color="inherit" onClick={logout}>{
-                loggedIn? 'Logout'
-                : 'Login'
-            }</Button>
+            {
+                loaded&&
+                <Button color="inherit" onClick={onClickHandler}>{
+                    loggedIn? 'Logout'
+                    : 'Login'
+                }</Button>
+            }
         </Toolbar>
         </AppBar>
         </ThemeProvider>

@@ -6,31 +6,37 @@ import GenreList from "../components/GenreList";
 const Survey = (props) => {
         const [form,setForm] = useState({
             genre: "28",
-            genreKey: 0,
             subgenre: []
         })
-        const[genreOne, setGenreOne] = useState()
-        const [genreSetTwo, setGenreSetTwo] = useState([])
-        const [error,setError] = useState({});
+        const genreList = GenreList
         const history = useHistory();
-        const [loaded, setLoaded] = useState(false);
         const onChangeHandler = (event) => {
-            // if(event.target.name === "genreOne"){
-            //     setForm({
-            //         genre: event.target.value,
-            //         genreKey: key
-            //     })
-            // }else{
+            if(event.target.name === "genre"){
+                setForm({
+                    genre: event.target.value,
+                })
+                for(let i=0; i<genreList.length; i++){
+                    if(genreList[i].id === form.genre){
+                        setForm({
+                            ...form,
+                            subgenre: [genreList.splice(i,0)]
+                        })
+                        console.log(genreList[i].id)
+                    }
+                }
+            }
+            // else{
             //     const newArr = GenreList.splice(form.genreKey,1) // genre was still apiGenre which terminal said wasnt defined 
             //     setForm({subgenre: newArr})
             // }
             // console.log(form.genreKey  + "HERES THE KEY +++++++++++++++++++++")
-            setForm({
-                ...form,
-                [event.target.name]: event.target.value
-            })
-            console.log(form)
+            // setForm({
+            //     ...form,
+            //     [event.target.name]: event.target.value
+            // })
         }
+        console.log(form.subgenre)
+    // }
     
         const onSubmitHandler = (event) => {
             event.preventDefault();
@@ -42,7 +48,7 @@ const Survey = (props) => {
             <div className="survey d-flex justify-content-center">
             <div className="survHeader">
                 <Link to="/">Back to Dashboard</Link>
-                <h1>What genre are you in the mood for today?</h1>
+                <h2>What genre are you in the mood for today?</h2>
                     
                     <form onSubmit={onSubmitHandler}>
                         <div className="form-group my-3">
@@ -63,4 +69,4 @@ const Survey = (props) => {
     )
 }
 
-export default Survey
+export default Survey;
